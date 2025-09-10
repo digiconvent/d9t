@@ -1,0 +1,10 @@
+github.com/digiconvent/embed_env v1.0.2 h1:E8zWuN3XoX0emMHyAyNwIDFmDdSUVVvHksHZ935ZA+0=
+github.com/digiconvent/embed_env v1.0.2/go.mod h1:7izY3Rga3/uFV56BF27MlKE+eZt3HwPazq17hEBpix4=
+github.com/digiconvent/embed_env v1.0.3 h1:8VRFmFfqZrtI5+vu9J73n4pWlKtPD081w22KOt8AGr8=
+github.com/digiconvent/embed_env v1.0.3/go.mod h1:7izY3Rga3/uFV56BF27MlKE+eZt3HwPazq17hEBpix4=
+github.com/digiconvent/install_on_debian v1.0.1 h1:yuO5ZiAFjE+1Pn6u7P87/Lo6+IoTcamVV+QuSw4mqpE=
+github.com/digiconvent/install_on_debian v1.0.1/go.mod h1:l85liM50zVunaJt6KwPmMS1jWe9NXstJEiTKFwCrSDE=
+github.com/digiconvent/install_on_debian v1.0.2 h1:IECsWUB+5BvJMp/ffi9tUBcaLPkYxk4O3s6XdpU5GSQ=
+github.com/digiconvent/install_on_debian v1.0.2/go.mod h1:l85liM50zVunaJt6KwPmMS1jWe9NXstJEiTKFwCrSDE=
+github.com/go-telegram/bot v1.17.0 h1:Hs0kGxSj97QFqOQP0zxduY/4tSx8QDzvNI9uVRS+zmY=
+github.com/go-telegram/bot v1.17.0/go.mod h1:i2TRs7fXWIeaceF3z7KzsMt/he0TwkVC680mvdTFYeM=
