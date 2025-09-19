@@ -4,22 +4,12 @@ import (
 	"github.com/google/uuid"
 )
 
-type UserRead struct {
-	Id           uuid.UUID `json:"id"`
-	Emailaddress string    `json:"emailaddress"`
-	FirstName    string    `json:"first_name"`
-	LastName     string    `json:"last_name"`
-	Enabled      bool      `json:"enabled"`
-}
-
-type UserWrite struct {
-	Emailaddress string `json:"emailaddress" validate:"required,email"`
-	FirstName    string `json:"first_name" validate:"alphaunicode"`
-	LastName     string `json:"last_name" validate:"alphaunicode"`
-}
-
-type UserSetEnabled struct {
-	Enabled bool `json:"enabled"`
+type User struct {
+	Id           *uuid.UUID `json:"id"`
+	Emailaddress string     `json:"emailaddress" validate:"required,email"`
+	FirstName    string     `json:"first_name" validate:"required,alphaunicode"`
+	LastName     string     `json:"last_name" validate:"required,alphaunicode"`
+	Enabled      bool       `json:"enabled"`
 }
 
 type UserFacade struct {
@@ -34,11 +24,11 @@ type UserFacade struct {
 }
 
 type UserProfile struct {
-	User        *UserRead                `json:"user"`
-	UserStatus  []*UserBecameStatusRead  `json:"status"`
-	UserRole    []*UserHasRoleRead       `json:"role"`
-	Groups      []*PermissionGroupFacade `json:"groups"`
-	Permissions []*PermissionFacade      `json:"permissions"`
+	User       *User                    `json:"user"`
+	UserStatus []*UserBecameStatusRead  `json:"status"`
+	UserRole   []*UserHasRoleRead       `json:"role"`
+	Groups     []*PermissionGroupFacade `json:"groups"`
+	Policies   []*PolicyFacade          `json:"policies"`
 }
 
 type UserFilterSort struct {

@@ -14,10 +14,9 @@ type PermissionRead struct {
 }
 
 type PermissionProfile struct {
-	Permission       *PermissionRead          `json:"permission"`
-	Descendants      []*PermissionFacade      `json:"descendants"`
-	PermissionGroups []*PermissionGroupFacade `json:"permission_groups"`
-	Users            []*UserFacade            `json:"users"`
+	Permission  *PermissionRead     `json:"permission"`
+	Descendants []*PermissionFacade `json:"descendants"`
+	Policies    []*PolicyFacade     `json:"policies"`
 }
 
 type PermissionFacade struct {

@@ -1,12 +1,12 @@
 package iam_permission_group_repository
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
 	uuid "github.com/google/uuid"
 )
 
-func (r *IamPermissionGroupRepository) UpdatePermissionGroup(id *uuid.UUID, arg *iam_domain.PermissionGroup) core.Status {
+func (r *IamPermissionGroupRepository) UpdatePermissionGroup(id *uuid.UUID, arg *iam_domain.PermissionGroup) *core.Status {
 	pg, _ := r.GetPermissionGroup(id)
 	if pg.Meta != "" {
 		arg.Name = pg.Name
@@ -14,13 +14,13 @@ func (r *IamPermissionGroupRepository) UpdatePermissionGroup(id *uuid.UUID, arg 
 	}
 	result, err := r.db.Exec(`update permission_groups set name = ?, abbr = ?, description = ? where id = ?`, arg.Name, arg.Abbr, arg.Description, id)
 	if err != nil {
-		return *core.InternalError(err.Error())
+		return core.InternalError(err.Error())
 	}
 
 	rowsAffected, _ := result.RowsAffected()
 	if rowsAffected == 0 {
-		return *core.NotFoundError("permission group not found")
+		return core.NotFoundError("permission group not found")
 	}
 
-	return *core.StatusNoContent()
+	return core.StatusNoContent()
 }

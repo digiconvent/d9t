@@ -3,11 +3,11 @@ package iam_permission_service_test
 import (
 	"testing"
 
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 )
 
 func TestGetPermissionProfile(t *testing.T) {
-	iamService := iam_service_test.GetTestIamService()
+	iamService := iam_service_test_utils.GetTestIamService()
 
 	permission, status := iamService.Permission.Profile("idam")
 	if !status.Err() || permission != nil {

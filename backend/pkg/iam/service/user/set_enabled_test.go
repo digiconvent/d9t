@@ -3,14 +3,14 @@ package iam_user_service_test
 import (
 	"testing"
 
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 )
 
 func TestSetEnabled(t *testing.T) {
-	iamService := iam_service_test.GetTestIamService()
+	iamService := iam_service_test_utils.GetTestIamService()
 
-	user := &iam_domain.UserWrite{
+	user := &iam_domain.User{
 		Emailaddress: "SetUserEnabled@test.test",
 		FirstName:    "Test",
 		LastName:     "McTest",

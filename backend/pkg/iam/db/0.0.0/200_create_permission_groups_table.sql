@@ -4,7 +4,7 @@ create table permission_groups (
    abbr varchar default '',
    description varchar default '',
    meta varchar default null check (meta is null or meta = 'role' or meta = 'status'),
-   parent uuid references permission_groups(id) on delete set null,
+   parent uuid references permission_groups(id) on delete set null default null,
    archived boolean default false
 );
 

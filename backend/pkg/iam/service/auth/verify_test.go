@@ -3,12 +3,12 @@ package iam_auth_service_test
 import (
 	"testing"
 
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 )
 
 func TestVerifyJwt(t *testing.T) {
-	testService := iam_service_test.GetTestIamService()
+	testService := iam_service_test_utils.GetTestIamService()
 
 	_, status := testService.Auth.VerifyJwt("badtoken")
 	if !status.Err() {
@@ -20,7 +20,7 @@ func TestVerifyJwt(t *testing.T) {
 		t.Fatal("Expected an error")
 	}
 
-	testUser := &iam_domain.UserWrite{
+	testUser := &iam_domain.User{
 		Emailaddress: "VerifyJwt@test.test",
 		FirstName:    "Test",
 		LastName:     "McTest",

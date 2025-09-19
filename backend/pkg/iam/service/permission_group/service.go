@@ -1,9 +1,9 @@
 package iam_permission_group_service
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_repository "github.com/DigiConvent/testd9t/pkg/iam/repository"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_repository "github.com/digiconvent/d9t/pkg/iam/repository"
 	"github.com/google/uuid"
 )
 

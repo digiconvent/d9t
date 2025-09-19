@@ -3,15 +3,15 @@ package iam_user_service_test
 import (
 	"testing"
 
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 	"github.com/google/uuid"
 )
 
 func TestRead(t *testing.T) {
-	iamService := iam_service_test.GetTestIamService()
+	iamService := iam_service_test_utils.GetTestIamService()
 
-	fakeUser := iam_domain.UserWrite{
+	fakeUser := iam_domain.User{
 		Emailaddress: "TestGetUser@test.test",
 		FirstName:    "Test",
 		LastName:     "GetUser",
@@ -29,7 +29,7 @@ func TestRead(t *testing.T) {
 		t.Fatal("User is nil")
 	}
 
-	if user.Id != *id {
+	if *user.Id != *id {
 		t.Errorf("ID is not equal")
 	}
 
@@ -102,9 +102,5 @@ func TestRead(t *testing.T) {
 
 	if profile.User == nil {
 		t.Fatal("User is nil")
-	}
-
-	if profile.Permissions[0].Name != "admin" {
-		t.Errorf("Permission is not admin")
 	}
 }

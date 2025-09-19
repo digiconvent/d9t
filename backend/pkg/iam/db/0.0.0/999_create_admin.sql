@@ -21,9 +21,9 @@ insert into permission_groups (
    meta
 ) values (
    '00000000-0000-0000-0000-000000000000', 
-   'admin', 
-   'admin', 
-   'A role for bypassing all permissions', 
+   'root', 
+   'root', 
+   'A role for bypassing all permissions',
    'role'
 );
 
@@ -49,7 +49,7 @@ insert into permission_group_has_user (
    '00000000-0000-0000-0000-000000000000', 
    '00000000-0000-0000-0000-000000000000', 
    datetime('now', 'localtime'), 
-   datetime('9999-12-31T23:59:59'), 
+   datetime('9999-12-31T23:59:59'), -- this should be enough tiume for 
    ''
 );
 

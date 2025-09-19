@@ -11,9 +11,10 @@ func Initialise(call []string) error {
 		return err
 	}
 
-	err = environment.Load()
+	err = environment.Load(*flags.EnvPreset)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

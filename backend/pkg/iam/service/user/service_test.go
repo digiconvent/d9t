@@ -3,7 +3,7 @@ package iam_user_service_test
 import (
 	"testing"
 
-	"github.com/DigiConvent/testd9t/core/db"
+	"github.com/digiconvent/migrate_packages/db"
 )
 
 var testDB db.DatabaseInterface

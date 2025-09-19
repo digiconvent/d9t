@@ -1,16 +1,16 @@
 package iam_auth_service
 
 import (
-	"github.com/DigiConvent/testd9t/core"
+	"github.com/digiconvent/d9t/core"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *IamAuthService) LoginUser(emailaddress string, rawPassword string) (*uuid.UUID, *core.Status) {
-	userId, hashedPassword, status := s.repository.Credentials.ReadCredentials(emailaddress)
+	userId, hashedPassword, status := s.repository.Auth.ReadCredentials(emailaddress)
 
 	if status.Err() {
-		return nil, &status
+		return nil, status
 	}
 
 	if bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(rawPassword)) != nil {

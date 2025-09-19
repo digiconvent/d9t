@@ -3,7 +3,7 @@ package iam_user_repository
 import (
 	"time"
 
-	"github.com/DigiConvent/testd9t/core"
+	"github.com/digiconvent/d9t/core"
 	uuid "github.com/google/uuid"
 )
 
@@ -17,12 +17,12 @@ type disabledUser struct {
 var disabledUsers map[string]disabledUser
 var lastCheck = time.Now()
 
-func (r *IamUserRepository) IsEnabled(id *uuid.UUID) (bool, core.Status) {
+func (r *IamUserRepository) IsEnabled(id *uuid.UUID) (bool, *core.Status) {
 	if disabledUsers == nil {
 		disabledUsers = make(map[string]disabledUser)
 		result, err := r.db.Query(`select id from users where enabled = false`)
 		if err != nil {
-			return false, *core.InternalError(err.Error())
+			return false, core.InternalError(err.Error())
 		}
 		defer result.Close()
 		for result.Next() {
@@ -30,14 +30,14 @@ func (r *IamUserRepository) IsEnabled(id *uuid.UUID) (bool, core.Status) {
 			err := result.Scan(&user.Id)
 			user.since = time.Now()
 			if err != nil {
-				return false, *core.InternalError(err.Error())
+				return false, core.InternalError(err.Error())
 			}
 			disabledUsers[user.Id.String()] = user
 		}
 	}
 
 	if id == nil {
-		return false, *core.UnprocessableContentError("ID is required")
+		return false, core.UnprocessableContentError("ID is required")
 	}
 	_, ok := disabledUsers[id.String()]
 
@@ -45,7 +45,7 @@ func (r *IamUserRepository) IsEnabled(id *uuid.UUID) (bool, core.Status) {
 	if lastCheck.Add(JwtDuration).Before(time.Now()) {
 		removeExpiredDisabledUsers()
 	}
-	return !ok, *core.StatusSuccess()
+	return !ok, core.StatusSuccess()
 }
 
 // no need to check since the list has to be initialised after the very first login

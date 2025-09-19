@@ -3,7 +3,7 @@ package iam_auth_service
 import (
 	"errors"
 
-	"github.com/DigiConvent/testd9t/core"
+	"github.com/digiconvent/d9t/core"
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 )

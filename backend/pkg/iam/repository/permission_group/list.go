@@ -1,17 +1,17 @@
 package iam_permission_group_repository
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
 	uuid "github.com/google/uuid"
 )
 
-func (r *IamPermissionGroupRepository) ListPermissionGroups() ([]*iam_domain.PermissionGroupFacade, core.Status) {
+func (r *IamPermissionGroupRepository) ListPermissionGroups() ([]*iam_domain.PermissionGroupFacade, *core.Status) {
 	var permissionGroups []*iam_domain.PermissionGroupFacade
 	rows, err := r.db.Query(`select id, name, abbr, meta, parent from permission_groups`)
 
 	if err != nil {
-		return nil, *core.InternalError(err.Error())
+		return nil, core.InternalError(err.Error())
 	}
 	defer rows.Close()
 
@@ -36,9 +36,9 @@ func (r *IamPermissionGroupRepository) ListPermissionGroups() ([]*iam_domain.Per
 		}
 
 		if err != nil {
-			return nil, *core.InternalError(err.Error())
+			return nil, core.InternalError(err.Error())
 		}
 		permissionGroups = append(permissionGroups, &permissionGroup)
 	}
-	return permissionGroups, *core.StatusSuccess()
+	return permissionGroups, core.StatusSuccess()
 }

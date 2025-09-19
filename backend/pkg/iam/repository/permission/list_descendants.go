@@ -1,15 +1,15 @@
 package iam_permission_repository
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
 )
 
-func (r *IamPermissionRepository) ListPermissionDescendants(name string) ([]*iam_domain.PermissionFacade, core.Status) {
+func (r *IamPermissionRepository) ListPermissionDescendants(name string) ([]*iam_domain.PermissionFacade, *core.Status) {
 	rows, err := r.db.Query(`select name, description, meta from permissions where name like ?`, name+".%")
 
 	if err != nil {
-		return nil, *core.InternalError(err.Error())
+		return nil, core.InternalError(err.Error())
 	}
 	defer rows.Close()
 
@@ -18,9 +18,9 @@ func (r *IamPermissionRepository) ListPermissionDescendants(name string) ([]*iam
 		permission := &iam_domain.PermissionFacade{Implied: false}
 		err := rows.Scan(&permission.Name, &permission.Description, &permission.Meta)
 		if err != nil {
-			return nil, *core.InternalError(err.Error())
+			return nil, core.InternalError(err.Error())
 		}
 		permissions = append(permissions, permission)
 	}
-	return permissions, *core.StatusSuccess()
+	return permissions, core.StatusSuccess()
 }

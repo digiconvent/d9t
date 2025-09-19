@@ -3,13 +3,14 @@ package iam_permission_group_service_test
 import (
 	"testing"
 
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_service_test "github.com/digiconvent/d9t/pkg/iam/service/test"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 	"github.com/google/uuid"
 )
 
 func TestGetPermissionGroupProfile(t *testing.T) {
-	testService := iam_service_test.GetTestIamService()
+	testService := iam_service_test_utils.GetTestIamService()
 
 	profileId, _ := testService.PermissionGroup.CreatePermissionGroup(&iam_domain.PermissionGroup{
 		Name:        "PermissionGroupProfile",
@@ -41,11 +42,7 @@ func TestGetPermissionGroupProfile(t *testing.T) {
 		t.Fatalf("Expected test, instead got %v", permissionGroupProfile.PermissionGroup.Description)
 	}
 
-	if permissionGroupProfile.PermissionGroup.Id != profileId {
+	if *permissionGroupProfile.PermissionGroup.Id != *profileId {
 		t.Fatalf("Expected %v, instead got %v", profileId, permissionGroupProfile.PermissionGroup.Id)
-	}
-
-	if len(permissionGroupProfile.Permissions) != 3 {
-		t.Fatalf("Expected 3, instead got %v", len(permissionGroupProfile.Permissions))
 	}
 }

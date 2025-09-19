@@ -1,19 +1,20 @@
 package iam_permission_repository
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	"github.com/DigiConvent/testd9t/core/db"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	"github.com/digiconvent/migrate_packages/db"
 )
 
 type IamPermissionRepositoryInterface interface {
-	CreatePermission(permission *iam_domain.PermissionWrite) core.Status
-	DeletePermission(name string) core.Status
-	GetPermission(name string) (*iam_domain.PermissionRead, core.Status)
-	ListPermissionPermissionGroups(name string) ([]*iam_domain.PermissionGroupFacade, core.Status)
-	ListPermissions() ([]*iam_domain.PermissionRead, core.Status)
-	ListPermissionDescendants(name string) ([]*iam_domain.PermissionFacade, core.Status)
-	ListPermissionUsers(name string) ([]*iam_domain.UserFacade, core.Status)
+	CreatePermission(permission *iam_domain.PermissionWrite) *core.Status
+
+	ReadPermission(name string) (*iam_domain.PermissionRead, *core.Status)
+	ListPermissions() ([]*iam_domain.PermissionRead, *core.Status)
+	ListPolicies(name string) ([]*iam_domain.PolicyFacade, *core.Status)
+	ListPermissionDescendants(name string) ([]*iam_domain.PermissionFacade, *core.Status)
+
+	DeletePermission(name string) *core.Status
 }
 
 type IamPermissionRepository struct {

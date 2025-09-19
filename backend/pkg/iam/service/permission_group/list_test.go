@@ -3,12 +3,13 @@ package iam_permission_group_service_test
 import (
 	"testing"
 
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
-	iam_service_test "github.com/DigiConvent/testd9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_service_test "github.com/digiconvent/d9t/pkg/iam/service/test"
+	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
 )
 
 func TestListPermissionGroups(t *testing.T) {
-	testService := iam_service_test.GetTestIamService()
+	testService := iam_service_test_utils.GetTestIamService()
 
 	testService.PermissionGroup.CreatePermissionGroup(&iam_domain.PermissionGroup{
 		Name:        "PermissionGroupList1",

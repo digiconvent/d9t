@@ -1,20 +1,20 @@
 package iam_auth_service
 
 import (
-	"github.com/DigiConvent/testd9t/core"
+	"github.com/digiconvent/d9t/core"
 	"github.com/google/uuid"
 )
 
 func (s *IamAuthService) LoginTelegramUser(body, botToken string) (*uuid.UUID, *core.Status) {
-	telegramId, status := s.repository.User.GetTelegramID(body, botToken)
+	telegramId, status := s.repository.Auth.GetTelegramId(body, botToken)
 	if status.Err() {
-		return nil, &status
+		return nil, status
 	}
 
 	userId, status := s.repository.User.GetUserByTelegramID(telegramId)
 	if status.Err() {
-		return nil, &status
+		return nil, status
 	}
 
-	return userId, &status
+	return userId, status
 }

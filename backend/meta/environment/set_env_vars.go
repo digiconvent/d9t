@@ -9,13 +9,16 @@ import (
 	"net/mail"
 	"os"
 	"strings"
-	"time"
 
+	"github.com/digiconvent/embed_env"
 	"github.com/go-telegram/bot"
 )
 
 // this needs manual testing when something is changed
-func (envVars *EnvVars) Prompt() {
+func (envVars *EnvVars) Prompt(preset string) {
+	if preset != "" {
+		embed_env.ReadFromBinary("", envVars, preset)
+	}
 	// this challenge token will be served and a request to the mux server will be made to verify the domain
 	challengeToken := bot.RandomString(40)
 
@@ -30,14 +33,9 @@ func (envVars *EnvVars) Prompt() {
 		Handler: mux,
 	}
 	go func() {
-		err := srv.ListenAndServe()
-		if err != nil {
-			fmt.Println(err)
-		}
+		srv.ListenAndServe() // no error handling since it will always throw an error once it is closed
 	}()
 	defer srv.Shutdown(context.Background())
-
-	time.Sleep(3 * time.Second)
 
 	envVars.Domain = readInput("fully qualified domain name", envVars.Domain, func(domain string) bool {
 		if strings.HasPrefix(domain, "http://") {
@@ -60,7 +58,7 @@ func (envVars *EnvVars) Prompt() {
 		defer func() {
 			err := resp.Body.Close()
 			if err != nil {
-				fmt.Println(err.Error())
+				fmt.Println(err)
 			}
 		}()
 
@@ -91,7 +89,7 @@ func (envVars *EnvVars) Prompt() {
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
-			fmt.Println(user.FirstName + " connected to d9t")
+			fmt.Println("Bot '" + user.FirstName + "' connected to d9t")
 		}
 		return true
 	})

@@ -1,8 +1,8 @@
 package iam_permission_group_service
 
 import (
-	"github.com/DigiConvent/testd9t/core"
-	iam_domain "github.com/DigiConvent/testd9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/core"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
 	"github.com/google/uuid"
 )
 
@@ -17,10 +17,10 @@ func (s *IamPermissionGroupService) UpdatePermissionGroup(id *uuid.UUID, arg *ia
 	// status := s.iamRepository.PermissionGroup.SetPermissionsForPermissionGroup(id, arg.Policies)
 
 	// if status.Err() {
-	// 	return &status
+	// 	return status
 	// }
 
 	status := s.repository.PermissionGroup.UpdatePermissionGroup(id, arg)
 
-	return &status
+	return status
 }

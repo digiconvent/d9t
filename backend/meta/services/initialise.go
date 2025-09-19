@@ -1,0 +1,23 @@
+package services
+
+import (
+	"errors"
+
+	iam_repository "github.com/digiconvent/d9t/pkg/iam/repository"
+	iam_service "github.com/digiconvent/d9t/pkg/iam/service"
+	"github.com/digiconvent/migrate_packages/db"
+)
+
+type Services struct {
+	Iam *iam_service.IamServices
+}
+
+func Initialise(databases map[string]db.DatabaseInterface) (*Services, error) {
+	iamDatabase := databases["iam"]
+	if iamDatabase == nil {
+		return nil, errors.New("could not find iam database")
+	}
+	return &Services{
+		Iam: iam_service.NewIamServices(iam_repository.NewIamRepository(iamDatabase)),
+	}, nil
+}
