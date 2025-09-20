@@ -8,7 +8,6 @@ import (
 
 func ExecuteAcmeProtocol(directoryUrl string, env *environment.EnvVars) error {
 	acmeClient := setup_acme.AcmeClient{
-		// DirectoryUrl: "https://acme-v02.api.letsencrypt.org/directory",
 		DirectoryUrl: directoryUrl,
 		InitData: &setup_acme.InitData{
 			Domain:       env.Domain,
