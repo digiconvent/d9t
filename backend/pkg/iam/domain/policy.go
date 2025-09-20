@@ -1,16 +1,27 @@
 package iam_domain
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Policy struct {
 	Id            *uuid.UUID `json:"id"`
-	Name          string     `json:"name" validate:"alphaunicode,required"`
-	Description   string     `json:"description"`
-	RequiredVotes int        `json:"required_votes" validate:"numeric,required,min=-100,max=100"`
+	Name          string     `json:"name"`
+	Description   *string    `json:"description"`
+	VotesRequired int        `json:"votes_required"`
+	CreatedAt     time.Time  `json:"created_at"`
+	UpdatedAt     time.Time  `json:"updated_at"`
 }
 
-type PolicyFacade struct {
-	Id            *uuid.UUID `json:"id"`
-	Name          string     `json:"name"`
-	RequiredVotes int        `json:"required_votes"`
+type PolicyProxy struct {
+	Id   *uuid.UUID `json:"id"`
+	Name string     `json:"name"`
+}
+
+type PolicyProfile struct {
+	Policy      *Policy       `json:"policy"`
+	Groups      []*GroupProxy `json:"groups"`
+	Permissions []string      `json:"permissions"`
 }

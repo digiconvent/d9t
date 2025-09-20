@@ -1,46 +1,31 @@
 package iam_domain
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
 type User struct {
 	Id           *uuid.UUID `json:"id"`
-	Emailaddress string     `json:"emailaddress" validate:"required,email"`
-	FirstName    string     `json:"first_name" validate:"required,alphaunicode"`
-	LastName     string     `json:"last_name" validate:"required,alphaunicode"`
+	Email        string     `json:"email"`
+	FirstName    string     `json:"first_name"`
+	LastName     string     `json:"last_name"`
+	PasswordHash string     `json:"password_hash"`
+	Telegram     *int       `json:"telegram"`
 	Enabled      bool       `json:"enabled"`
+	JoinedAt     time.Time  `json:"joined_at"`
 }
 
-type UserFacade struct {
-	Id         uuid.UUID  `json:"id"`
-	FirstName  string     `json:"first_name"`
-	LastName   string     `json:"last_name"`
-	StatusId   *uuid.UUID `json:"status_id"`
-	StatusName *string    `json:"status_name"`
-	RoleId     *uuid.UUID `json:"role_id"`
-	RoleName   *string    `json:"role_name"`
-	Implied    bool       `json:"implied"`
+type UserProxy struct {
+	Id        *uuid.UUID `json:"id"`
+	Email     string     `json:"email"`
+	FirstName string     `json:"first_name"`
+	LastName  string     `json:"last_name"`
 }
 
 type UserProfile struct {
-	User       *User                    `json:"user"`
-	UserStatus []*UserBecameStatusRead  `json:"status"`
-	UserRole   []*UserHasRoleRead       `json:"role"`
-	Groups     []*PermissionGroupFacade `json:"groups"`
-	Policies   []*PolicyFacade          `json:"policies"`
-}
-
-type UserFilterSort struct {
-	Filter struct {
-		Emailaddress *string
-		FirstName    *string
-		LastName     *string
-	}
-	Sort struct {
-		Field string
-		Asc   bool
-	}
-	Page         int
-	ItemsPerPage int
+	User        *User         `json:"user"`
+	Groups      []*GroupProxy `json:"groups"`
+	Permissions []string      `json:"permissions"`
 }

@@ -1,12 +1,8 @@
 package iam_domain
 
-type PasswordReset struct {
-	Email string
-	Code  string
-}
+import "github.com/google/uuid"
 
-type SetPassword struct {
-	Email    string
-	Code     string
-	Password string
+type UserPassword struct {
+	User     *uuid.UUID `json:"user"`
+	Password string     `json:"password"`
 }
