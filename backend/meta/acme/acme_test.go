@@ -2,6 +2,7 @@ package acme_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/digiconvent/d9t/meta/acme"
@@ -9,8 +10,11 @@ import (
 )
 
 func TestAcmeProtocol(t *testing.T) {
+	if os.Getenv("ACME_TEST") == "" {
+		t.Skip("Skipping ACME test - set ACME_TEST=1 to run on server with proper DNS")
+	}
+
 	domain := "digiconvent.de"
-	// this can only be tested on a server with a records for domain
 	env := environment.FromString("domain=" + domain + "&email=info@" + domain)
 
 	fmt.Println(env.Domain)
