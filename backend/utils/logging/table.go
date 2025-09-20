@@ -14,8 +14,7 @@ type Table struct {
 
 func NewTable(headers []string) Table {
 	return Table{
-		Headers: headers,
-		Values:  [][]any{},
+		Headers: headers, Values: [][]any{},
 	}
 }
 
