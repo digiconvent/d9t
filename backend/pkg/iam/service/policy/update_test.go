@@ -9,22 +9,31 @@ import (
 	"github.com/digiconvent/d9t/tests"
 )
 
-func TestCreate(t *testing.T) {
+func TestUpdate(t *testing.T) {
 	db := tests.GetTestDatabase("iam")
 	repo := iam_repository.NewIamRepository(db)
 	service := iam_policy_service.NewPolicyService(repo.Policy)
 
 	policy := &iam_domain.Policy{
-		Name:          "Create Test Policy",
+		Name:          "Update Test Policy",
 		VotesRequired: 1,
 	}
 
-	id, status := service.Create(policy)
-	if !status.Ok() {
-		t.Fatalf("Create failed: %s", status.String())
+	id, _ := service.Create(policy)
+
+	updates := &iam_domain.Policy{
+		Id:            id,
+		Name:          "Updated Policy",
+		VotesRequired: 2,
 	}
 
-	if id == nil {
-		t.Fatal("Expected policy ID to be returned")
+	status := service.Update(updates)
+	if !status.Ok() {
+		t.Fatalf("Update failed: %s", status.String())
+	}
+
+	result, _ := service.Read(id)
+	if result.Name != "Updated Policy" {
+		t.Errorf("Expected 'Updated Policy', got %s", result.Name)
 	}
 }

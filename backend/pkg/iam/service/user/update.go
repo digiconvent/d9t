@@ -2,12 +2,14 @@ package iam_user_service
 
 import (
 	"github.com/digiconvent/d9t/core"
-	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/pkg/iam/domain"
 	"github.com/google/uuid"
 )
 
-func (s *IamUserService) UpdateUser(id *uuid.UUID, user *iam_domain.User) *core.Status {
+func (s *userService) Update(user *iam_domain.User) *core.Status {
+	return s.repo.Update(user)
+}
 
-	status := s.repository.User.UpdateUser(id, user)
-	return status
+func (s *userService) SetEnabled(id *uuid.UUID, enabled bool) *core.Status {
+	return s.repo.SetEnabled(id, enabled)
 }

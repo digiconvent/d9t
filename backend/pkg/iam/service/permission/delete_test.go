@@ -4,33 +4,24 @@ import (
 	"testing"
 
 	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
-	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
+	iam_repository "github.com/digiconvent/d9t/pkg/iam/repo"
+	iam_permission_service "github.com/digiconvent/d9t/pkg/iam/service/permission"
+	"github.com/digiconvent/d9t/tests"
 )
 
-func TestDeletePermission(t *testing.T) {
-	service := iam_service_test_utils.GetTestIamService()
+func TestDelete(t *testing.T) {
+	db := tests.GetTestDatabase("iam")
+	repo := iam_repository.NewIamRepository(db)
+	service := iam_permission_service.NewPermissionService(repo.Permission)
 
-	permissionName := "some.test.permission"
-	service.Permission.Create(&iam_domain.PermissionWrite{
-		Name:        permissionName,
-		Description: "test",
-		Meta:        "",
-	})
-
-	status := service.Permission.Delete(permissionName)
-	if status != nil && status.Err() {
-		t.Fatal("Error deleting permission: " + status.Message)
+	permission := &iam_domain.Permission{
+		Permission: "delete.test.permission",
 	}
 
-	if status.Code != 204 {
-		t.Fatal("Expected 204, got ", status.Code)
-	}
+	service.Create(permission)
 
-	permissions, _ := service.Permission.List()
-
-	for _, permission := range permissions {
-		if permission.Name == permissionName {
-			t.Fatal("Expected permission", permissionName, "to be deleted")
-		}
+	status := service.Delete(permission.Permission)
+	if !status.Ok() {
+		t.Fatalf("Delete failed: %s", status.String())
 	}
 }

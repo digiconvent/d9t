@@ -4,7 +4,6 @@ import (
 	"github.com/digiconvent/d9t/core"
 )
 
-func (service *IamPermissionService) Delete(name string) *core.Status {
-	status := service.repository.Permission.DeletePermission(name)
-	return status
+func (s *permissionService) Delete(permission string) *core.Status {
+	return s.repo.Delete(permission)
 }

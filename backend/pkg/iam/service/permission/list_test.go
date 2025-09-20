@@ -3,19 +3,36 @@ package iam_permission_service_test
 import (
 	"testing"
 
-	iam_service_test_utils "github.com/digiconvent/d9t/pkg/iam/service/test"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_repository "github.com/digiconvent/d9t/pkg/iam/repo"
+	iam_permission_service "github.com/digiconvent/d9t/pkg/iam/service/permission"
+	"github.com/digiconvent/d9t/tests"
 )
 
-func TestListPermissions(t *testing.T) {
-	iamService := iam_service_test_utils.GetTestIamService()
+func TestList(t *testing.T) {
+	db := tests.GetTestDatabase("iam")
+	repo := iam_repository.NewIamRepository(db)
+	service := iam_permission_service.NewPermissionService(repo.Permission)
 
-	permissions, status := iamService.Permission.List()
-
-	if status.Err() {
-		t.Errorf("ListPermissions() failed: %s", status.Message)
+	permission := &iam_domain.Permission{
+		Permission: "list.test.permission",
 	}
 
-	if len(permissions) == 0 {
-		t.Errorf("ListPermissions() failed: no permissions found")
+	service.Create(permission)
+
+	permissions, status := service.List()
+	if !status.Ok() {
+		t.Fatalf("List failed: %s", status.String())
+	}
+
+	found := false
+	for _, p := range permissions {
+		if p.Permission == "list.test.permission" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatal("Permission not found in list")
 	}
 }

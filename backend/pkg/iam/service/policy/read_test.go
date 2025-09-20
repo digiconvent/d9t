@@ -9,22 +9,24 @@ import (
 	"github.com/digiconvent/d9t/tests"
 )
 
-func TestCreate(t *testing.T) {
+func TestRead(t *testing.T) {
 	db := tests.GetTestDatabase("iam")
 	repo := iam_repository.NewIamRepository(db)
 	service := iam_policy_service.NewPolicyService(repo.Policy)
 
 	policy := &iam_domain.Policy{
-		Name:          "Create Test Policy",
+		Name:          "Read Test Policy",
 		VotesRequired: 1,
 	}
 
-	id, status := service.Create(policy)
+	id, _ := service.Create(policy)
+
+	result, status := service.Read(id)
 	if !status.Ok() {
-		t.Fatalf("Create failed: %s", status.String())
+		t.Fatalf("Read failed: %s", status.String())
 	}
 
-	if id == nil {
-		t.Fatal("Expected policy ID to be returned")
+	if result.Name != policy.Name {
+		t.Errorf("Expected %s, got %s", policy.Name, result.Name)
 	}
 }

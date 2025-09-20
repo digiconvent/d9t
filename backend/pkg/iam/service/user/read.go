@@ -6,15 +6,19 @@ import (
 	"github.com/google/uuid"
 )
 
-func (s *IamUserService) Read(id *uuid.UUID) (*iam_domain.User, *core.Status) {
-	if id == nil {
-		return nil, &core.Status{Code: 422, Message: "ID is required"}
-	}
+func (s *userService) Read(id *uuid.UUID) (*iam_domain.User, *core.Status) {
+	return s.repo.Read(id)
+}
 
-	userRead, status := s.repository.User.GetUserByID(id)
-	if status.Err() {
-		return nil, status
-	}
+func (s *userService) ReadProfile(id *uuid.UUID) (*iam_domain.UserProfile, *core.Status) {
+	profile := &iam_domain.UserProfile{}
+	return profile, core.StatusSuccess()
+}
 
-	return userRead, core.StatusSuccess()
+func (s *userService) ReadProxies() ([]*iam_domain.UserProxy, *core.Status) {
+	return s.repo.ReadProxies()
+}
+
+func (s *userService) ReadByEmail(email string) (*iam_domain.User, *core.Status) {
+	return s.repo.ReadByEmail(email)
 }

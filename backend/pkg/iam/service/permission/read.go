@@ -5,6 +5,6 @@ import (
 	"github.com/digiconvent/d9t/pkg/iam/domain"
 )
 
-func (s *permissionService) List() ([]*iam_domain.Permission, *core.Status) {
-	return s.repo.List()
+func (s *permissionService) Read(permission string) (*iam_domain.Permission, *core.Status) {
+	return s.repo.Read(permission)
 }

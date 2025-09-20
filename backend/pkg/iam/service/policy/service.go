@@ -2,24 +2,26 @@ package iam_policy_service
 
 import (
 	"github.com/digiconvent/d9t/core"
-	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
-	iam_repository "github.com/digiconvent/d9t/pkg/iam/repository"
+	"github.com/digiconvent/d9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/pkg/iam/repo/policy"
 	"github.com/google/uuid"
 )
 
-type IamPolicyServiceInterface interface {
+type PolicyServiceInterface interface {
 	Create(policy *iam_domain.Policy) (*uuid.UUID, *core.Status)
 	Read(id *uuid.UUID) (*iam_domain.Policy, *core.Status)
-	Update(id *uuid.UUID, policy *iam_domain.Policy) *core.Status
+	ReadProfile(id *uuid.UUID) (*iam_domain.PolicyProfile, *core.Status)
+	ReadProxies() ([]*iam_domain.PolicyProxy, *core.Status)
+	Update(policy *iam_domain.Policy) *core.Status
 	Delete(id *uuid.UUID) *core.Status
+	AddPermission(policy *uuid.UUID, permission string) *core.Status
+	RemovePermission(policy *uuid.UUID, permission string) *core.Status
 }
 
-type IamPolicyService struct {
-	repository *iam_repository.IamRepository
+type policyService struct {
+	repo iam_policy_repository.PolicyRepositoryInterface
 }
 
-func NewPolicyService(iamRepo *iam_repository.IamRepository) IamPolicyServiceInterface {
-	return &IamPolicyService{
-		repository: iamRepo,
-	}
+func NewPolicyService(repo iam_policy_repository.PolicyRepositoryInterface) PolicyServiceInterface {
+	return &policyService{repo: repo}
 }

@@ -1,4 +1,4 @@
-package iam_user_service_test
+package iam_group_service_test
 
 import (
 	"github.com/digiconvent/d9t/tests"

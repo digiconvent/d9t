@@ -9,22 +9,25 @@ import (
 	"github.com/digiconvent/d9t/tests"
 )
 
-func TestCreate(t *testing.T) {
+func TestDelete(t *testing.T) {
 	db := tests.GetTestDatabase("iam")
 	repo := iam_repository.NewIamRepository(db)
 	service := iam_policy_service.NewPolicyService(repo.Policy)
 
 	policy := &iam_domain.Policy{
-		Name:          "Create Test Policy",
+		Name:          "Delete Test Policy",
 		VotesRequired: 1,
 	}
 
-	id, status := service.Create(policy)
+	id, _ := service.Create(policy)
+
+	status := service.Delete(id)
 	if !status.Ok() {
-		t.Fatalf("Create failed: %s", status.String())
+		t.Fatalf("Delete failed: %s", status.String())
 	}
 
-	if id == nil {
-		t.Fatal("Expected policy ID to be returned")
+	_, status = service.Read(id)
+	if status.Ok() {
+		t.Fatal("Expected deleted policy to not be found")
 	}
 }

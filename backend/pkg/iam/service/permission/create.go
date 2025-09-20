@@ -2,10 +2,9 @@ package iam_permission_service
 
 import (
 	"github.com/digiconvent/d9t/core"
-	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	"github.com/digiconvent/d9t/pkg/iam/domain"
 )
 
-func (service *IamPermissionService) Create(permission *iam_domain.PermissionWrite) *core.Status {
-	status := service.repository.Permission.CreatePermission(permission)
-	return status
+func (s *permissionService) Create(permission *iam_domain.Permission) *core.Status {
+	return s.repo.Create(permission)
 }

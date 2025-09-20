@@ -9,35 +9,27 @@ import (
 	"github.com/digiconvent/d9t/tests"
 )
 
-func TestUpdate(t *testing.T) {
+func TestDelete(t *testing.T) {
 	db := tests.GetTestDatabase("iam")
 	repo := iam_repository.NewIamRepository(db)
 	service := iam_user_service.NewUserService(repo.User)
 
 	user := &iam_domain.User{
-		Email:     "update@example.com",
-		FirstName: "Update",
+		Email:     "delete@example.com",
+		FirstName: "Delete",
 		LastName:  "Test",
 		Enabled:   true,
 	}
 
 	id, _ := service.Create(user)
 
-	updates := &iam_domain.User{
-		Id:        id,
-		Email:     user.Email,
-		FirstName: "Updated",
-		LastName:  "Name",
-		Enabled:   user.Enabled,
-	}
-
-	status := service.Update(updates)
+	status := service.Delete(id)
 	if !status.Ok() {
-		t.Fatalf("Update failed: %s", status.String())
+		t.Fatalf("Delete failed: %s", status.String())
 	}
 
-	result, _ := service.Read(id)
-	if result.FirstName != "Updated" {
-		t.Errorf("Expected 'Updated', got %s", result.FirstName)
+	_, status = service.Read(id)
+	if status.Ok() {
+		t.Fatal("Expected deleted user to not be found")
 	}
 }
