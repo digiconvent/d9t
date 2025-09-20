@@ -3,7 +3,7 @@ package services
 import (
 	"errors"
 
-	iam_repository "github.com/digiconvent/d9t/pkg/iam/repository"
+	iam_repository "github.com/digiconvent/d9t/pkg/iam/repo"
 	iam_service "github.com/digiconvent/d9t/pkg/iam/service"
 	"github.com/digiconvent/migrate_packages/db"
 )
