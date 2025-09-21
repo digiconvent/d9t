@@ -9,7 +9,7 @@ import (
 type Policy struct {
 	Id            *uuid.UUID `json:"id"`
 	Name          string     `json:"name"`
-	Description   *string    `json:"description"`
+	Description   string     `json:"description"`
 	VotesRequired int        `json:"votes_required"`
 	CreatedAt     time.Time  `json:"created_at"`
 	UpdatedAt     time.Time  `json:"updated_at"`
