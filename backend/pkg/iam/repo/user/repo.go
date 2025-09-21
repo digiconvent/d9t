@@ -13,6 +13,8 @@ type UserRepositoryInterface interface {
 	Read(id *uuid.UUID) (*iam_domain.User, *core.Status)
 	ReadProxies() ([]*iam_domain.UserProxy, *core.Status)
 	ReadByEmail(email string) (*iam_domain.User, *core.Status)
+	ReadGroups(id *uuid.UUID) ([]*iam_domain.GroupProxy, *core.Status)
+	ReadPoliciesWithPermission(user *uuid.UUID, permission string) ([]*iam_domain.PolicyProxy, *core.Status)
 
 	Update(user *iam_domain.User) *core.Status
 
