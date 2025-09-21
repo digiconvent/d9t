@@ -25,9 +25,9 @@ func (r *groupRepository) Create(group *iam_domain.Group) (*uuid.UUID, *core.Sta
 			}
 		}
 		if strings.Contains(err.Error(), "would create cycle") {
-			return nil, core.BadRequestError("cannot create group hierarchy cycle")
+			return nil, core.ConflictError("cannot create group hierarchy cycle")
 		}
-		return nil, core.InternalError("failed to create group")
+		return nil, core.InternalError("failed to create group: " + err.Error())
 	}
 
 	return &id, core.StatusCreated()

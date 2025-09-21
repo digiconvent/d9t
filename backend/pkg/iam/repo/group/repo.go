@@ -13,6 +13,8 @@ type GroupRepositoryInterface interface {
 	ReadProxies() ([]*iam_domain.GroupProxy, *core.Status)
 	ReadAscendants(id *uuid.UUID) ([]*iam_domain.GroupProxy, *core.Status)
 	ReadDescendants(id *uuid.UUID) ([]*iam_domain.GroupProxy, *core.Status)
+	ReadUsers(id *uuid.UUID) ([]*iam_domain.UserProxy, *core.Status)
+	ReadPolicies(id *uuid.UUID) ([]*iam_domain.PolicyProxy, *core.Status)
 	Update(group *iam_domain.Group) *core.Status
 	Delete(id *uuid.UUID) *core.Status
 	AddUser(group, user *uuid.UUID) *core.Status
