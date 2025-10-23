@@ -10,15 +10,16 @@ import (
 func (r *authRepository) GetPasswordHash(user *uuid.UUID) (string, *core.Status) {
 	query := `select password_hash from users where id = ?`
 
-	var hash string
-	err := r.db.QueryRow(query, user.String()).Scan(&hash)
-
+	row, err := r.db.QueryRow(query, user.String())
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return "", core.NotFoundError("user not found")
 		}
 		return "", core.InternalError("failed to get password hash")
 	}
+
+	var hash string
+	row.Scan(&hash)
 
 	return hash, core.StatusSuccess()
 }

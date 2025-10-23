@@ -10,15 +10,16 @@ import (
 func (r *permissionRepository) Read(permission string) (*iam_domain.Permission, *core.Status) {
 	query := `select permission from permissions where permission = ?`
 
-	perm := &iam_domain.Permission{}
-	err := r.db.QueryRow(query, permission).Scan(&perm.Permission)
-
+	row, err := r.db.QueryRow(query, permission)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, core.NotFoundError("permission not found")
 		}
 		return nil, core.InternalError("failed to read permission")
 	}
+
+	perm := &iam_domain.Permission{}
+	row.Scan(&perm.Permission)
 
 	return perm, core.StatusSuccess()
 }

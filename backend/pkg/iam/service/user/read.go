@@ -12,6 +12,19 @@ func (s *userService) Read(id *uuid.UUID) (*iam_domain.User, *core.Status) {
 
 func (s *userService) ReadProfile(id *uuid.UUID) (*iam_domain.UserProfile, *core.Status) {
 	profile := &iam_domain.UserProfile{}
+
+	user, status := s.repo.Read(id)
+	if status.Err() {
+		return nil, status
+	}
+	profile.User = user
+
+	groups, status := s.repo.ReadGroups(id)
+	if status.Err() {
+		return nil, status
+	}
+	profile.Groups = groups
+
 	return profile, core.StatusSuccess()
 }
 

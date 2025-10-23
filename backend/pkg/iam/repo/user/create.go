@@ -11,13 +11,13 @@ import (
 func (r *userRepository) Create(user *iam_domain.User) (*uuid.UUID, *core.Status) {
 	id, _ := uuid.NewV7()
 
-	query := `insert into users (id, email, first_name, last_name, password_hash, telegram, enabled, joined_at) values (?, ?, ?, ?, ?, ?, ?, datetime('now'))`
+	query := `insert into users (id, email, first_name, last_name, telegram, enabled, joined_at) values (?, ?, ?, ?, ?, ?, datetime('now'))`
 
-	_, err := r.db.Exec(query, id, user.Email, user.FirstName, user.LastName, user.PasswordHash, user.Telegram, user.Enabled)
+	_, err := r.db.ExecDebug(query, id, user.Email, user.FirstName, user.LastName, user.Telegram, false)
 	if err != nil {
-		if strings.Contains(err.Error(), "unique constraint failed") {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 			if strings.Contains(err.Error(), "email") {
-				return nil, core.ConflictError("email already exists")
+				return nil, core.ConflictError("iam.user.email.duplicate")
 			}
 		}
 		return nil, core.InternalError("failed to create user")

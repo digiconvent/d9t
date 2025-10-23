@@ -2,8 +2,8 @@ package iam_user_service
 
 import (
 	"github.com/digiconvent/d9t/core"
-	"github.com/digiconvent/d9t/pkg/iam/domain"
-	"github.com/digiconvent/d9t/pkg/iam/repo/user"
+	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
+	iam_user_repository "github.com/digiconvent/d9t/pkg/iam/repo/user"
 	"github.com/google/uuid"
 )
 
@@ -18,6 +18,7 @@ type UserServiceInterface interface {
 	AddGroup(user, group *uuid.UUID) *core.Status
 	RemoveGroup(user, group *uuid.UUID) *core.Status
 	SetEnabled(id *uuid.UUID, enabled bool) *core.Status
+	UserHasPermission(user *uuid.UUID, permission string) ([]*iam_domain.PolicyProxy, *core.Status)
 }
 
 type userService struct {

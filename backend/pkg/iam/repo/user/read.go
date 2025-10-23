@@ -9,57 +9,61 @@ import (
 )
 
 func (r *userRepository) Read(id *uuid.UUID) (*iam_domain.User, *core.Status) {
-	query := `select id, email, first_name, last_name, password_hash, telegram, enabled, joined_at from users where id = ?`
+	query := `select id, email, first_name, last_name, telegram, enabled, joined_at from users where id = ?`
+
+	row, err := r.db.QueryRow(query, id.String())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, core.NotFoundError("iam.user.not_found")
+		}
+		return nil, core.InternalError("failed to read user")
+	}
 
 	user := &iam_domain.User{}
-	err := r.db.QueryRow(query, id.String()).Scan(
+	err = row.Scan(
 		&user.Id,
 		&user.Email,
 		&user.FirstName,
 		&user.LastName,
-		&user.PasswordHash,
 		&user.Telegram,
 		&user.Enabled,
 		&user.JoinedAt,
 	)
-
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, core.NotFoundError("user not found")
-		}
-		return nil, core.InternalError("failed to read user")
+		return nil, core.NotFoundError("iam.user.not_found")
 	}
 
 	return user, core.StatusSuccess()
 }
 
 func (r *userRepository) ReadByEmail(email string) (*iam_domain.User, *core.Status) {
-	query := `select id, email, first_name, last_name, password_hash, telegram, enabled, joined_at from users where lower(email) = lower(?)`
+	query := `select id, email, first_name, last_name, telegram, enabled, joined_at from users where lower(email) = lower(?)`
+
+	row, err := r.db.QueryRow(query, email)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, core.NotFoundError("iam.user.not_found")
+		}
+		return nil, core.InternalError("failed to read user")
+	}
 
 	user := &iam_domain.User{}
-	err := r.db.QueryRow(query, email).Scan(
+	row.Scan(
 		&user.Id,
 		&user.Email,
 		&user.FirstName,
 		&user.LastName,
-		&user.PasswordHash,
 		&user.Telegram,
 		&user.Enabled,
 		&user.JoinedAt,
 	)
 
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, core.NotFoundError("user not found")
-		}
-		return nil, core.InternalError("failed to read user")
-	}
-
 	return user, core.StatusSuccess()
 }
 
 func (r *userRepository) ReadProxies() ([]*iam_domain.UserProxy, *core.Status) {
-	query := `select id, email, first_name, last_name from users`
+	query := `select id, first_name, last_name from users`
 
 	rows, err := r.db.Query(query)
 	if err != nil {
@@ -70,7 +74,7 @@ func (r *userRepository) ReadProxies() ([]*iam_domain.UserProxy, *core.Status) {
 	var users []*iam_domain.UserProxy
 	for rows.Next() {
 		user := &iam_domain.UserProxy{}
-		err := rows.Scan(&user.Id, &user.Email, &user.FirstName, &user.LastName)
+		err := rows.Scan(&user.Id, &user.FirstName, &user.LastName)
 		if err != nil {
 			return nil, core.InternalError("failed to scan user")
 		}

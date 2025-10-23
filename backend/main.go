@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/digiconvent/d9t/api/routes"
+	api_engine "github.com/digiconvent/d9t/api/engine"
 	"github.com/digiconvent/d9t/meta"
 	"github.com/digiconvent/d9t/meta/acme"
 	"github.com/digiconvent/d9t/meta/environment"
@@ -59,8 +59,6 @@ func main() {
 		fmt.Println("\tpassword:     ", environment.Env.TelegramBotToken+"\n")
 	case "serve":
 		log.Info("Serving")
-		// get the installed version (it's an env variable)
-		// get the target version (version of this binary)
 		migrate, err := package_databases.MigrateDatabasesFrom("pkg")
 		if err != nil {
 			panic(err)
@@ -70,16 +68,13 @@ func main() {
 			panic(err)
 		}
 
-		services, err := services.Initialise(databases)
+		_, err = services.Initialise(databases)
 		if err != nil {
 			panic(err)
 		}
 
-		srv := routes.InitRouter(services)
-
-		log.Info("Starting server")
-		srv.ListenAndServe()
-		log.Error("Stopped server")
+		server := api_engine.SetupServer()
+		server.ListenAndServe()
 	case "env":
 		installedBinary := "/home/digiconvent/main"
 		installedEnv := &environment.EnvVars{}

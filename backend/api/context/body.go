@@ -16,10 +16,10 @@ func ParseAndValidate[T any](r *http.Request) (*T, *core.Status) {
 	}
 	defer r.Body.Close()
 
-	v := &validator.Validate{}
+	v := validator.New()
 	if err := v.Struct(payload); err != nil {
 		return payload, core.UnprocessableContentError(err.Error())
 	}
 
-	return payload, nil
+	return payload, core.StatusSuccess()
 }

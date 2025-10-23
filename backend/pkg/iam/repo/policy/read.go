@@ -11,8 +11,16 @@ import (
 func (r *policyRepository) Read(id *uuid.UUID) (*iam_domain.Policy, *core.Status) {
 	query := `select id, name, description, votes_required from policies where id = ?`
 
+	row, err := r.db.QueryRow(query, id.String())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, core.NotFoundError("policy not found")
+		}
+		return nil, core.InternalError("failed to read policy")
+	}
+
 	policy := &iam_domain.Policy{}
-	err := r.db.QueryRow(query, id.String()).Scan(
+	err = row.Scan(
 		&policy.Id,
 		&policy.Name,
 		&policy.Description,
@@ -20,10 +28,7 @@ func (r *policyRepository) Read(id *uuid.UUID) (*iam_domain.Policy, *core.Status
 	)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, core.NotFoundError("policy not found")
-		}
-		return nil, core.InternalError("failed to read policy")
+		return nil, core.NotFoundError("iam.policy.not_found")
 	}
 
 	return policy, core.StatusSuccess()

@@ -22,5 +22,5 @@ func (r *userRepository) Delete(id *uuid.UUID) *core.Status {
 		return core.NotFoundError("user not found")
 	}
 
-	return core.StatusSuccess()
+	return core.StatusNoContent()
 }

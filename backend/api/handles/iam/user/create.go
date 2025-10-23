@@ -2,34 +2,32 @@ package iam_user_handles
 
 import (
 	"github.com/digiconvent/d9t/api/context"
+	"github.com/digiconvent/d9t/core"
 	iam_domain "github.com/digiconvent/d9t/pkg/iam/domain"
 )
 
+type CreateRequest struct {
+	Email string `json:"email" validate:"email"`
+}
+
 func Create(ctx *context.Context) {
-	data, status := context.ParseAndValidate[iam_domain.User](ctx.Request)
+	data, status := context.ParseAndValidate[CreateRequest](ctx.Request)
 	if status.Err() {
 		ctx.HandleStatus(status)
 		return
 	}
-	id, status := ctx.Services.Iam.User.Create(data)
+	id, status := ctx.Services.Iam.User.Create(&iam_domain.User{
+		Email: data.Email,
+	})
 	if status.Err() {
+		_, check := ctx.Services.Iam.User.ReadByEmail(data.Email)
+		if !check.Err() {
+			ctx.HandleStatus(core.ConflictError("iam.user.email.duplicate"))
+			return
+		}
+
 		ctx.HandleStatus(status)
 		return
 	}
-	ctx.Respond(id.String(), status)
-}
-func Read(ctx *context.Context) {
-	ctx.Response.Write([]byte("Reading user: " + ctx.Id.String()))
-}
-func Update(ctx *context.Context) {
-	ctx.Response.Write([]byte("Updating user: " + ctx.Id.String()))
-}
-func Delete(ctx *context.Context) {
-	ctx.Response.Write([]byte("creating user"))
-}
-func List(ctx *context.Context) {
-	ctx.Response.Write([]byte("Listing users"))
-}
-func AddRole(ctx *context.Context) {
-	ctx.Response.Write([]byte("creating user"))
+	ctx.Respond(status.Code, id.String())
 }

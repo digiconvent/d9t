@@ -11,20 +11,24 @@ import (
 func (r *groupRepository) Read(id *uuid.UUID) (*iam_domain.Group, *core.Status) {
 	query := `select id, name, type, parent, description from groups where id = ?`
 
+	row, err := r.db.QueryRow(query, id.String())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, core.NotFoundError("group not found")
+		}
+		return nil, core.InternalError("failed to read group")
+	}
+
 	group := &iam_domain.Group{}
-	err := r.db.QueryRow(query, id.String()).Scan(
+	err = row.Scan(
 		&group.Id,
 		&group.Name,
 		&group.Type,
 		&group.Parent,
 		&group.Description,
 	)
-
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, core.NotFoundError("group not found")
-		}
-		return nil, core.InternalError("failed to read group")
+		return nil, core.NotFoundError("iam.permission_group.not_found")
 	}
 
 	return group, core.StatusSuccess()

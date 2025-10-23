@@ -7,9 +7,9 @@ import (
 )
 
 func (r *userRepository) Update(user *iam_domain.User) *core.Status {
-	query := `update users set email = ?, first_name = ?, last_name = ?, password_hash = ?, telegram = ?, enabled = ? where id = ?`
+	query := `update users set email = ?, first_name = ?, last_name = ?, telegram = ?, enabled = ? where id = ?`
 
-	result, err := r.db.Exec(query, user.Email, user.FirstName, user.LastName, user.PasswordHash, user.Telegram, user.Enabled, user.Id)
+	result, err := r.db.Exec(query, user.Email, user.FirstName, user.LastName, user.Telegram, user.Enabled, user.Id)
 	if err != nil {
 		return core.InternalError("failed to update user")
 	}
@@ -23,7 +23,7 @@ func (r *userRepository) Update(user *iam_domain.User) *core.Status {
 		return core.NotFoundError("user not found")
 	}
 
-	return core.StatusSuccess()
+	return core.StatusNoContent()
 }
 
 func (r *userRepository) SetEnabled(id *uuid.UUID, enabled bool) *core.Status {

@@ -7,19 +7,17 @@ import (
 )
 
 type User struct {
-	Id           *uuid.UUID `json:"id"`
-	Email        string     `json:"email"`
-	FirstName    string     `json:"first_name"`
-	LastName     string     `json:"last_name"`
-	PasswordHash string     `json:"password_hash"`
-	Telegram     *int       `json:"telegram"`
-	Enabled      bool       `json:"enabled"`
-	JoinedAt     time.Time  `json:"joined_at"`
+	Id        *uuid.UUID `json:"id"`
+	Email     string     `json:"email"`
+	FirstName string     `json:"first_name"`
+	LastName  string     `json:"last_name"`
+	Telegram  *int       `json:"telegram"`
+	Enabled   bool       `json:"enabled"`
+	JoinedAt  time.Time  `json:"joined_at"`
 }
 
 type UserProxy struct {
 	Id        *uuid.UUID `json:"id"`
-	Email     string     `json:"email"`
 	FirstName string     `json:"first_name"`
 	LastName  string     `json:"last_name"`
 }
